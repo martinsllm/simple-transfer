@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
-  "scripts": {},
+  "scripts": {
+    "seed": "ts-node prisma/seeds/seed.ts"
+  },
   "devDependencies": {
     "@types/node": "^22.15.18",
     "prisma": "^6.8.2",
