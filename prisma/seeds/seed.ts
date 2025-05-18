@@ -11,7 +11,7 @@ async function main() {
             password: "12345678",
             wallet: {
                 create: {
-                    value: 1000,
+                    balance: 1000,
                 },
             },
         },
@@ -27,7 +27,7 @@ async function main() {
             password: "12345678",
             wallet: {
                 create: {
-                    value: 1500,
+                    balance: 1500,
                 },
             },
         },
@@ -44,7 +44,7 @@ async function main() {
             role: "SHOPKEEPER",
             wallet: {
                 create: {
-                    value: 5000,
+                    balance: 5000,
                 },
             },
         },
