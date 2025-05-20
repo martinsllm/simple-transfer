@@ -14,9 +14,14 @@ export class UserRepositoryPrisma implements UserGateway {
             where: {
                 id,
             },
+            include: {
+                wallet: true,
+            },
         })
 
         if (!user) throw new Error("User Not Found")
+
+        console.log(typeof user.wallet)
 
         const userData = this.present(user)
         return userData
@@ -30,6 +35,7 @@ export class UserRepositoryPrisma implements UserGateway {
             email: user.email,
             password: user.password,
             role: user.role,
+            wallet: user.wallet,
         })
 
         return userData

@@ -1,3 +1,5 @@
+import { Wallet, WalletProps } from "../../wallet/entity/wallet"
+
 export type UserProps = {
     id: number
     name: string
@@ -5,6 +7,7 @@ export type UserProps = {
     email: string
     password: string
     role: string
+    wallet: WalletProps[]
 }
 
 export class User {
@@ -36,5 +39,9 @@ export class User {
 
     public get role() {
         return this.props.role
+    }
+
+    public get wallet() {
+        return this.props.wallet
     }
 }
