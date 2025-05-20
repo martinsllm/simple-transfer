@@ -1,3 +1,4 @@
+import { User } from "../../domain/user/entity/user"
 import { UserGateway } from "../../domain/user/gateway/user.gateway"
 import { Usecase } from "../usecase"
 
@@ -23,7 +24,14 @@ export class CreateTransactionUsecase
         const payer = await this.userGateway.getById(input.payerId)
         const receiver = await this.userGateway.getById(input.receiverId)
 
+        this.validateStorePayer(payer)
+
         console.log(payer)
         console.log(receiver)
+    }
+
+    private validateStorePayer(user: User) {
+        if (user.role == "SHOPKEEPER")
+            throw new Error("Transaction not authorized for this user!")
     }
 }
