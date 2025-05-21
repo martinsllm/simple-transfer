@@ -1,4 +1,5 @@
 import { UserRepositoryPrisma } from "./infra/repositories/user/user.repository.prisma"
+import { AuthorizarionApi } from "./infra/services/authorization.api"
 import { prisma } from "./package/prisma/prisma"
 import {
     CreateTransactionUsecase,
@@ -6,8 +7,12 @@ import {
 } from "./usecases/transaction"
 
 const userRepository = UserRepositoryPrisma.create(prisma)
+const authService = AuthorizarionApi.create()
 
-const createTransaction = CreateTransactionUsecase.create(userRepository)
+const createTransaction = CreateTransactionUsecase.create(
+    userRepository,
+    authService
+)
 
 const input: TransactionInputDto = {
     payerId: 1,
