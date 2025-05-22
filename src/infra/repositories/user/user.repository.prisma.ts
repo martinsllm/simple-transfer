@@ -1,6 +1,7 @@
 import { PrismaClient } from "@prisma/client"
 import { UserGateway } from "../../../domain/user/gateway/user.gateway"
 import { User, UserProps } from "../../../domain/user/entity/user"
+import { NotFoundError } from "../../api/middlewares/errors/helpers/api-errors"
 
 export class UserRepositoryPrisma implements UserGateway {
     private constructor(private readonly prismaClient: PrismaClient) {}
@@ -19,7 +20,7 @@ export class UserRepositoryPrisma implements UserGateway {
             },
         })
 
-        if (!user) throw new Error("User Not Found!")
+        if (!user) throw new NotFoundError("User Not Found!")
 
         const userData = this.present(user)
         return userData
