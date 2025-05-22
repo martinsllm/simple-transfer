@@ -1,4 +1,4 @@
-import { Wallet, WalletProps } from "../../wallet/entity/wallet"
+import { WalletProps } from "../../wallet/entity/wallet"
 
 export type UserProps = {
     id: number

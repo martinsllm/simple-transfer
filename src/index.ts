@@ -17,6 +17,7 @@ const createTransaction = CreateTransactionUsecase.create(
 const input: TransactionInputDto = {
     payerId: 1,
     receiverId: 2,
+    value: 200,
 }
 
 createTransaction.execute(input)

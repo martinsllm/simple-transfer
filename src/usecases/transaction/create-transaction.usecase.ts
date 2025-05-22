@@ -6,6 +6,7 @@ import { Usecase } from "../usecase"
 export type TransactionInputDto = {
     payerId: number
     receiverId: number
+    value: number
 }
 
 export type TransactionOutputDto = void
@@ -32,6 +33,7 @@ export class CreateTransactionUsecase
         const receiver = await this.userGateway.getById(input.receiverId)
 
         this.validateStorePayer(payer)
+        this.validatePayerBalance(payer, input.value)
         await this.validateTransfer()
 
         console.log(receiver)
@@ -40,6 +42,13 @@ export class CreateTransactionUsecase
     private validateStorePayer(user: User) {
         if (user.role == "SHOPKEEPER")
             throw new Error("Transfer not authorized for this user!")
+    }
+
+    private validatePayerBalance(user: User, value: number) {
+        if (user.wallet) {
+            if (user.wallet.balance < value)
+                throw new Error("Insufficiente Balance")
+        }
     }
 
     private async validateTransfer() {
