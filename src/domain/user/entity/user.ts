@@ -7,7 +7,7 @@ export type UserProps = {
     email: string
     password: string
     role: string
-    wallet: WalletProps[]
+    wallet: WalletProps | null
 }
 
 export class User {
