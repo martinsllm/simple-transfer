@@ -3,19 +3,19 @@ export type TransactionProps = {
     value: number
     payerId: number
     receiverId: number
-    data: Date
+    createdAt: Date
 }
 
 export class Transaction {
     private constructor(private props: TransactionProps) {}
 
-    public static create(props: Omit<TransactionProps, "id" | "data">) {
+    public static create(props: Omit<TransactionProps, "id" | "createdAt">) {
         return new Transaction({
             id: crypto.randomUUID().toString(),
             value: props.value,
             payerId: props.payerId,
             receiverId: props.receiverId,
-            data: new Date(),
+            createdAt: new Date(),
         })
     }
 
@@ -37,5 +37,9 @@ export class Transaction {
 
     public get receiverId() {
         return this.props.receiverId
+    }
+
+    public get createdAt() {
+        return this.props.createdAt
     }
 }

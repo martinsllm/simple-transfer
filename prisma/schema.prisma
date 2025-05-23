@@ -8,13 +8,15 @@ datasource db {
 }
 
 model User {
-  id       Int     @id @default(autoincrement())
-  name     String
-  cpf      String  @unique
-  email    String  @unique
-  password String
-  role     String  @default("COMMON")
-  wallet   Wallet?
+  id                   Int           @id @default(autoincrement())
+  name                 String
+  cpf                  String        @unique
+  email                String        @unique
+  password             String
+  role                 String        @default("COMMON")
+  wallet               Wallet?
+  transactionsSent     Transaction[] @relation("payer")
+  transactionsReceived Transaction[] @relation("receiver")
 
   @@map("users")
 }
@@ -26,4 +28,16 @@ model Wallet {
   user    User  @relation(fields: [userId], references: [id])
 
   @@map("wallets")
+}
+
+model Transaction {
+  id         String   @id
+  payerId    Int
+  receiverId Int
+  value      Decimal
+  createdAt  DateTime @default(now())
+  payer      User     @relation("payer", fields: [payerId], references: [id])
+  receiver   User     @relation("receiver", fields: [receiverId], references: [id])
+
+  @@map("transactions")
 }

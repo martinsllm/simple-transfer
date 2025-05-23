@@ -1,4 +1,5 @@
 import { Transaction } from "../../domain/transaction/entity/transaction"
+import { TransactionGateway } from "../../domain/transaction/gateway/transaction.gateway"
 import { User } from "../../domain/user/entity/user"
 import { UserGateway } from "../../domain/user/gateway/user.gateway"
 import { BadRequestError } from "../../infra/api/middlewares/errors/helpers/api-errors"
@@ -20,14 +21,20 @@ export class CreateTransactionUsecase
 {
     private constructor(
         private readonly userGateway: UserGateway,
+        private readonly transactionGateway: TransactionGateway,
         private readonly authService: AuthorizarionApi
     ) {}
 
     public static create(
         userGateway: UserGateway,
+        transactionGateway: TransactionGateway,
         authService: AuthorizarionApi
     ) {
-        return new CreateTransactionUsecase(userGateway, authService)
+        return new CreateTransactionUsecase(
+            userGateway,
+            transactionGateway,
+            authService
+        )
     }
 
     public async execute(
@@ -41,6 +48,8 @@ export class CreateTransactionUsecase
         await this.validateTransfer()
 
         const transaction = Transaction.create(input)
+
+        await this.transactionGateway.save(transaction)
 
         const output = this.presentOutput(transaction)
 
