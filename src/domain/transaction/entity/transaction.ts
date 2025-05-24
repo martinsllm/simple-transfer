@@ -1,9 +1,13 @@
+import { UserProps } from "../../user/entity/user"
+
 export type TransactionProps = {
     id: string
     value: number
     payerId: number
     receiverId: number
     createdAt: Date
+    payer?: UserProps
+    receiver?: UserProps
 }
 
 export class Transaction {
@@ -41,5 +45,13 @@ export class Transaction {
 
     public get createdAt() {
         return this.props.createdAt
+    }
+
+    public get payer() {
+        return this.props.payer
+    }
+
+    public get receiver() {
+        return this.props.receiver
     }
 }

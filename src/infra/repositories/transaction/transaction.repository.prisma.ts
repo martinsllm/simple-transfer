@@ -24,4 +24,29 @@ export class TransactionRepositoryPrisma implements TransactionGateway {
             },
         })
     }
+
+    public async getTransactions(): Promise<Transaction[]> {
+        const transactions = await this.prismaClient.transaction.findMany({
+            include: {
+                payer: true,
+                receiver: true,
+            },
+        })
+
+        const transactionList = transactions.map((t) => {
+            const transaction = Transaction.with({
+                id: t.id,
+                payerId: t.payerId,
+                receiverId: t.receiverId,
+                value: t.value,
+                createdAt: t.createdAt,
+                payer: t.payer,
+                receiver: t.receiver,
+            })
+
+            return transaction
+        })
+
+        return transactionList
+    }
 }

@@ -34,7 +34,7 @@ model Transaction {
   id         String   @id
   payerId    Int
   receiverId Int
-  value      Decimal
+  value      Float
   createdAt  DateTime @default(now())
   payer      User     @relation("payer", fields: [payerId], references: [id])
   receiver   User     @relation("receiver", fields: [receiverId], references: [id])
