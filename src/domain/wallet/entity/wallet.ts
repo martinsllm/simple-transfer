@@ -22,4 +22,12 @@ export class Wallet {
     public get userId() {
         return this.props.userId
     }
+
+    public decreaseBalance(value: number) {
+        this.props.balance -= value
+    }
+
+    public increaseBalance(value: number) {
+        this.props.balance += value
+    }
 }
