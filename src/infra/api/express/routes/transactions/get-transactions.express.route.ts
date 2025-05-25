@@ -4,19 +4,8 @@ import {
     GetTransactionOutputDto,
     GetTransactionsUseCase,
 } from "../../../../../usecases/transactions"
-import { UserPropsOmit } from "../../../../../domain/user/entity/user"
 
-export type GetTransactionsResponseDto = {
-    transactions: {
-        id: string
-        payerId: number
-        receiverId: number
-        value: number
-        createdAt: Date
-        payer?: UserPropsOmit
-        receiver?: UserPropsOmit
-    }[]
-}
+export type GetTransactionsResponseDto = GetTransactionOutputDto
 
 export class GetTransactionsRoute implements Route {
     private constructor(

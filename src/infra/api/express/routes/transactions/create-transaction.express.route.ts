@@ -6,9 +6,7 @@ import {
     TransactionOutputDto,
 } from "../../../../../usecases/transactions"
 
-export type TransactionResponseDto = {
-    id: string
-}
+export type TransactionResponseDto = TransactionOutputDto
 
 export class CreateTransactionRoute implements Route {
     private constructor(
@@ -53,7 +51,7 @@ export class CreateTransactionRoute implements Route {
     }
 
     private present(input: TransactionOutputDto): TransactionResponseDto {
-        const response = { id: input.id }
+        const response: TransactionResponseDto = { id: input.id }
         return response
     }
 }
