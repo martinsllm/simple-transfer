@@ -1,4 +1,4 @@
-import { UserProps } from "../../user/entity/user"
+import { UserProps, UserPropsOmit } from "../../user/entity/user"
 
 export type TransactionProps = {
     id: string
@@ -6,8 +6,8 @@ export type TransactionProps = {
     payerId: number
     receiverId: number
     createdAt: Date
-    payer?: UserProps
-    receiver?: UserProps
+    payer?: UserPropsOmit
+    receiver?: UserPropsOmit
 }
 
 export class Transaction {

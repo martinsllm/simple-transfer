@@ -1,6 +1,6 @@
 import { Transaction } from "../../domain/transaction/entity/transaction"
 import { TransactionGateway } from "../../domain/transaction/gateway/transaction.gateway"
-import { UserProps } from "../../domain/user/entity/user"
+import { UserPropsOmit } from "../../domain/user/entity/user"
 import { Usecase } from "../usecase"
 
 export type GetTransactionsInputDto = void
@@ -12,8 +12,8 @@ export type GetTransactionOutputDto = {
         receiverId: number
         value: number
         createdAt: Date
-        payer?: UserProps
-        receiver?: UserProps
+        payer?: UserPropsOmit
+        receiver?: UserPropsOmit
     }[]
 }
 

@@ -1,6 +1,9 @@
 import { PrismaClient } from "@prisma/client"
 import { TransactionGateway } from "../../../domain/transaction/gateway/transaction.gateway"
-import { Transaction } from "../../../domain/transaction/entity/transaction"
+import {
+    Transaction,
+    TransactionProps,
+} from "../../../domain/transaction/entity/transaction"
 
 export class TransactionRepositoryPrisma implements TransactionGateway {
     private constructor(private readonly prismaClient: PrismaClient) {}
@@ -28,11 +31,29 @@ export class TransactionRepositoryPrisma implements TransactionGateway {
     public async getTransactions(): Promise<Transaction[]> {
         const transactions = await this.prismaClient.transaction.findMany({
             include: {
-                payer: true,
-                receiver: true,
+                payer: {
+                    select: {
+                        name: true,
+                        cpf: true,
+                        email: true,
+                    },
+                },
+                receiver: {
+                    select: {
+                        name: true,
+                        cpf: true,
+                        email: true,
+                    },
+                },
             },
         })
 
+        const transactionList = this.present(transactions)
+
+        return transactionList
+    }
+
+    private present(transactions: TransactionProps[]): Transaction[] {
         const transactionList = transactions.map((t) => {
             const transaction = Transaction.with({
                 id: t.id,

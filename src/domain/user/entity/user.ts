@@ -10,6 +10,8 @@ export type UserProps = {
     wallet?: WalletProps | null
 }
 
+export type UserPropsOmit = Omit<UserProps, "id" | "password" | "role">
+
 export class User {
     private constructor(private props: UserProps) {}
 
