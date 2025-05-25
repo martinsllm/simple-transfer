@@ -3,8 +3,8 @@ import { HttpMethod, Route } from "../route"
 import {
     GetTransactionOutputDto,
     GetTransactionsUseCase,
-} from "../../../../../usecases/transaction/"
-import { UserProps } from "../../../../../domain/user/entity/user"
+} from "../../../../../usecases/transactions"
+import { UserPropsOmit } from "../../../../../domain/user/entity/user"
 
 export type GetTransactionsResponseDto = {
     transactions: {
@@ -13,8 +13,8 @@ export type GetTransactionsResponseDto = {
         receiverId: number
         value: number
         createdAt: Date
-        payer?: UserProps
-        receiver?: UserProps
+        payer?: UserPropsOmit
+        receiver?: UserPropsOmit
     }[]
 }
 
@@ -51,8 +51,10 @@ export class GetTransactionsRoute implements Route {
         return this.method
     }
 
-    private present(input: GetTransactionOutputDto): GetTransactionOutputDto {
-        const response: GetTransactionOutputDto = {
+    private present(
+        input: GetTransactionOutputDto
+    ): GetTransactionsResponseDto {
+        const response: GetTransactionsResponseDto = {
             transactions: input.transactions.map((t: any) => {
                 return {
                     id: t.id,

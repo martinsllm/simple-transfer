@@ -23,7 +23,6 @@ export class UserRepositoryPrisma implements UserGateway {
         if (!user) throw new NotFoundError("User Not Found!")
 
         const userData = this.present(user)
-        console.log(userData)
         return userData
     }
 

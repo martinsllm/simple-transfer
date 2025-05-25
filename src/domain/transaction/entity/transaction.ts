@@ -1,4 +1,4 @@
-import { UserProps, UserPropsOmit } from "../../user/entity/user"
+import { UserPropsOmit } from "../../user/entity/user"
 
 export type TransactionProps = {
     id: string

@@ -3,7 +3,8 @@ import { HttpMethod, Route } from "../route"
 import {
     CreateTransactionUsecase,
     TransactionInputDto,
-} from "../../../../../usecases/transaction"
+    TransactionOutputDto,
+} from "../../../../../usecases/transactions"
 
 export type TransactionResponseDto = {
     id: string
@@ -51,7 +52,7 @@ export class CreateTransactionRoute implements Route {
         return this.method
     }
 
-    private present(input: TransactionResponseDto): TransactionResponseDto {
+    private present(input: TransactionOutputDto): TransactionResponseDto {
         const response = { id: input.id }
         return response
     }
