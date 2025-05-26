@@ -46,6 +46,9 @@ export class TransactionRepositoryPrisma implements TransactionGateway {
                     },
                 },
             },
+            orderBy: {
+                createdAt: "desc",
+            },
         })
 
         const transactionList = this.present(transactions)
