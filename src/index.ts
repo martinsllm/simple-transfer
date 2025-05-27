@@ -3,15 +3,23 @@ import {
     CreateTransactionRoute,
     GetTransactionsRoute,
 } from "./infra/api/express/routes/transactions"
-import { GetProfileRoute } from "./infra/api/express/routes/users"
-import { TransactionRepositoryPrisma } from "./infra/repositories/transaction/transaction.repository.prisma"
-import { UserRepositoryPrisma } from "./infra/repositories/user/user.repository.prisma"
-import { WalletRepositoryPrisma } from "./infra/repositories/wallet/wallet.repository.prisma"
+import {
+    GetProfileRoute,
+    GetUserTransactionsRoute,
+} from "./infra/api/express/routes/users"
+import {
+    TransactionRepositoryPrisma,
+    UserRepositoryPrisma,
+    WalletRepositoryPrisma,
+} from "./infra/repositories"
 import { AuthorizarionApi } from "./infra/services/authorization.api"
 import { prisma } from "./package/prisma/prisma"
-import { CreateTransactionUsecase } from "./usecases/transactions"
-import { GetTransactionsUseCase } from "./usecases/transactions/get-transactions.usecase"
+import {
+    CreateTransactionUsecase,
+    GetTransactionsUseCase,
+} from "./usecases/transactions"
 import { GetProfileUsecase } from "./usecases/users"
+import { GetUserTransactionsUsecase } from "./usecases/users/get-user-transactions.usecase"
 
 const userRepository = UserRepositoryPrisma.create(prisma)
 const walletRepository = WalletRepositoryPrisma.create(prisma)
@@ -30,6 +38,9 @@ function main() {
 
     const getProfile = GetProfileUsecase.create(userRepository)
 
+    const getUserTransactions =
+        GetUserTransactionsUsecase.create(userRepository)
+
     const createTransactionRoute =
         CreateTransactionRoute.create(createTransaction)
 
@@ -37,12 +48,16 @@ function main() {
 
     const getProfileRoute = GetProfileRoute.create(getProfile)
 
+    const getUserTransactionsRoute =
+        GetUserTransactionsRoute.create(getUserTransactions)
+
     const port = Number(process.env.PORT)
 
     const api = ApiExpress.create([
         createTransactionRoute,
         getTransactionsRoute,
         getProfileRoute,
+        getUserTransactionsRoute,
     ])
 
     api.start(port)

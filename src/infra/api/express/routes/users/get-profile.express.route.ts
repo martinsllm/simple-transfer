@@ -16,7 +16,11 @@ export class GetProfileRoute implements Route {
     ) {}
 
     public static create(userService: GetProfileUsecase) {
-        return new GetProfileRoute("/profile/:id", HttpMethod.GET, userService)
+        return new GetProfileRoute(
+            "/user/profile/:id",
+            HttpMethod.GET,
+            userService
+        )
     }
 
     public getHandler() {

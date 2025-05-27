@@ -2,6 +2,10 @@ import { PrismaClient } from "@prisma/client"
 import { UserGateway } from "../../../domain/user/gateway/user.gateway"
 import { User, UserProps } from "../../../domain/user/entity/user"
 import { NotFoundError } from "../../api/middlewares/errors/helpers/api-errors"
+import {
+    Transaction,
+    TransactionProps,
+} from "../../../domain/transaction/entity/transaction"
 
 export class UserRepositoryPrisma implements UserGateway {
     private constructor(private readonly prismaClient: PrismaClient) {}
@@ -22,11 +26,40 @@ export class UserRepositoryPrisma implements UserGateway {
 
         if (!user) throw new NotFoundError("User Not Found!")
 
-        const userData = this.present(user)
+        const userData = this.presentUser(user)
         return userData
     }
 
-    private present(user: UserProps): User {
+    public async getUserTransactions(id: number): Promise<Transaction[][]> {
+        const user = await this.prismaClient.user.findFirst({
+            where: {
+                id,
+            },
+            include: {
+                transactionsSent: {
+                    include: {
+                        receiver: true,
+                    },
+                },
+                transactionsReceived: {
+                    include: {
+                        payer: true,
+                    },
+                },
+            },
+        })
+
+        if (!user) throw new NotFoundError("User Not Found!")
+
+        const transactionsList = this.presentUserTransactions(
+            user.transactionsSent,
+            user.transactionsReceived
+        )
+
+        return transactionsList
+    }
+
+    private presentUser(user: UserProps): User {
         const userData = User.with({
             id: user.id,
             name: user.name,
@@ -38,5 +71,43 @@ export class UserRepositoryPrisma implements UserGateway {
         })
 
         return userData
+    }
+
+    private presentUserTransactions(
+        sent: TransactionProps[],
+        received: TransactionProps[]
+    ): Transaction[][] {
+        const transactionsReceived = received.map((t) => {
+            const transaction = Transaction.with({
+                id: t.id,
+                payerId: t.payerId,
+                receiverId: t.receiverId,
+                value: t.value,
+                createdAt: t.createdAt,
+                payer: t.payer,
+            })
+
+            return transaction
+        })
+
+        const transactionsSent = sent.map((t) => {
+            const transaction = Transaction.with({
+                id: t.id,
+                payerId: t.payerId,
+                receiverId: t.receiverId,
+                value: t.value,
+                createdAt: t.createdAt,
+                receiver: t.receiver,
+            })
+
+            return transaction
+        })
+
+        const transactionList = []
+
+        transactionList.push(transactionsReceived)
+        transactionList.push(transactionsSent)
+
+        return transactionList
     }
 }

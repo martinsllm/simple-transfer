@@ -1,3 +1,4 @@
+import { Transaction } from "../../transaction/entity/transaction"
 import { WalletProps } from "../../wallet/entity/wallet"
 
 export type UserProps = {
@@ -8,6 +9,8 @@ export type UserProps = {
     password: string
     role: string
     wallet?: WalletProps | null
+    transactionsSent?: Transaction[] | null
+    transactionsReceived?: Transaction[] | null
 }
 
 export type UserPropsOmit = Omit<UserProps, "id" | "password" | "role">
@@ -45,5 +48,13 @@ export class User {
 
     public get wallet() {
         return this.props.wallet
+    }
+
+    public get transactionsSent() {
+        return this.props.transactionsSent
+    }
+
+    public get transactionsReceived() {
+        return this.props.transactionsReceived
     }
 }
