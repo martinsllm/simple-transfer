@@ -1,33 +1,18 @@
 import { PrismaClient } from "@prisma/client"
-import { UserGateway } from "../../../domain/user/gateway/user.gateway"
-import { User, UserProps } from "../../../domain/user/entity/user"
-import { NotFoundError } from "../../api/middlewares/errors/helpers/api-errors"
 import {
     Transaction,
     TransactionProps,
 } from "../../../domain/transaction/entity/transaction"
+import { GetUserTransactionsGateway } from "../../../domain/user/gateway/get-user-transactions"
+import { NotFoundError } from "../../api/middlewares/errors/helpers/api-errors"
 
-export class UserRepositoryPrisma implements UserGateway {
+export class GetUserTransactionRepositoryPrisma
+    implements GetUserTransactionsGateway
+{
     private constructor(private readonly prismaClient: PrismaClient) {}
 
     public static create(prismaClient: PrismaClient) {
-        return new UserRepositoryPrisma(prismaClient)
-    }
-
-    public async getById(id: number): Promise<User> {
-        const user = await this.prismaClient.user.findFirst({
-            where: {
-                id,
-            },
-            include: {
-                wallet: true,
-            },
-        })
-
-        if (!user) throw new NotFoundError("User Not Found!")
-
-        const userData = this.presentUser(user)
-        return userData
+        return new GetUserTransactionRepositoryPrisma(prismaClient)
     }
 
     public async getUserTransactions(id: number): Promise<Transaction[][]> {
@@ -51,7 +36,7 @@ export class UserRepositoryPrisma implements UserGateway {
 
         if (!user) throw new NotFoundError("User Not Found!")
 
-        const transactionsList = this.presentUserTransactions(
+        const transactionsList = this.present(
             user.transactionsSent,
             user.transactionsReceived
         )
@@ -59,21 +44,7 @@ export class UserRepositoryPrisma implements UserGateway {
         return transactionsList
     }
 
-    private presentUser(user: UserProps): User {
-        const userData = User.with({
-            id: user.id,
-            name: user.name,
-            cpf: user.cpf,
-            email: user.email,
-            password: user.password,
-            role: user.role,
-            wallet: user.wallet,
-        })
-
-        return userData
-    }
-
-    private presentUserTransactions(
+    private present(
         sent: TransactionProps[],
         received: TransactionProps[]
     ): Transaction[][] {

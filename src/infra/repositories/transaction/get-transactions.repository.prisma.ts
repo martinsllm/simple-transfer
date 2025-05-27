@@ -1,31 +1,15 @@
 import { PrismaClient } from "@prisma/client"
-import { TransactionGateway } from "../../../domain/transaction/gateway/transaction.gateway"
 import {
     Transaction,
     TransactionProps,
 } from "../../../domain/transaction/entity/transaction"
+import { GetTransactionsGateway } from "../../../domain/transaction/gateways/get-transactions.gateway"
 
-export class TransactionRepositoryPrisma implements TransactionGateway {
+export class GetTransactionsRepositoryPrisma implements GetTransactionsGateway {
     private constructor(private readonly prismaClient: PrismaClient) {}
 
     public static create(prismaClient: PrismaClient) {
-        return new TransactionRepositoryPrisma(prismaClient)
-    }
-
-    public async save(data: Transaction): Promise<void> {
-        const transaction = {
-            id: data.id,
-            payerId: data.payerId,
-            receiverId: data.receiverId,
-            value: data.value,
-            createdAt: data.createdAt,
-        }
-
-        await this.prismaClient.transaction.create({
-            data: {
-                ...transaction,
-            },
-        })
+        return new GetTransactionsRepositoryPrisma(prismaClient)
     }
 
     public async getTransactions(): Promise<Transaction[]> {

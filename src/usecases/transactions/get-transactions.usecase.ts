@@ -1,5 +1,5 @@
 import { Transaction } from "../../domain/transaction/entity/transaction"
-import { TransactionGateway } from "../../domain/transaction/gateway/transaction.gateway"
+import { GetTransactionsGateway } from "../../domain/transaction/gateways/get-transactions.gateway"
 import { UserPropsOmit } from "../../domain/user/entity/user"
 import { Usecase } from "../usecase"
 
@@ -21,10 +21,10 @@ export class GetTransactionsUseCase
     implements Usecase<GetTransactionsInputDto, GetTransactionOutputDto>
 {
     private constructor(
-        private readonly transactionGateway: TransactionGateway
+        private readonly transactionGateway: GetTransactionsGateway
     ) {}
 
-    public static create(transactionGateway: TransactionGateway) {
+    public static create(transactionGateway: GetTransactionsGateway) {
         return new GetTransactionsUseCase(transactionGateway)
     }
 

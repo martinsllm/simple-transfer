@@ -1,7 +1,7 @@
 import { Transaction } from "../../domain/transaction/entity/transaction"
-import { TransactionGateway } from "../../domain/transaction/gateway/transaction.gateway"
+import { CreateTransactionGateway } from "../../domain/transaction/gateways/create-transaction.gateway"
 import { User } from "../../domain/user/entity/user"
-import { UserGateway } from "../../domain/user/gateway/user.gateway"
+import { GetUserGateway } from "../../domain/user/gateway"
 import { WalletGateway } from "../../domain/wallet/gateway/wallet.gateway"
 import { BadRequestError } from "../../infra/api/middlewares/errors/helpers/api-errors"
 import { AuthorizarionApi } from "../../infra/services/authorization.api"
@@ -21,16 +21,16 @@ export class CreateTransactionUsecase
     implements Usecase<TransactionInputDto, TransactionOutputDto>
 {
     private constructor(
-        private readonly userGateway: UserGateway,
+        private readonly userGateway: GetUserGateway,
         private readonly walletGateway: WalletGateway,
-        private readonly transactionGateway: TransactionGateway,
+        private readonly transactionGateway: CreateTransactionGateway,
         private readonly authService: AuthorizarionApi
     ) {}
 
     public static create(
-        userGateway: UserGateway,
+        userGateway: GetUserGateway,
         walletGateway: WalletGateway,
-        transactionGateway: TransactionGateway,
+        transactionGateway: CreateTransactionGateway,
         authService: AuthorizarionApi
     ) {
         return new CreateTransactionUsecase(

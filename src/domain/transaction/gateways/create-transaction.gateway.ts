@@ -1,6 +1,5 @@
 import { Transaction } from "../entity/transaction"
 
-export interface TransactionGateway {
+export interface CreateTransactionGateway {
     save(data: Transaction): Promise<void>
-    getTransactions(): Promise<Transaction[]>
 }

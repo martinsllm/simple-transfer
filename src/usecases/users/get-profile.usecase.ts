@@ -1,5 +1,5 @@
 import { UserProps } from "../../domain/user/entity/user"
-import { UserGateway } from "../../domain/user/gateway/user.gateway"
+import { GetUserGateway } from "../../domain/user/gateway"
 import { WalletProps } from "../../domain/wallet/entity/wallet"
 import { Usecase } from "../usecase"
 
@@ -18,9 +18,9 @@ export type GetProfileOutputDto = {
 export class GetProfileUsecase
     implements Usecase<GetProfileInputDto, GetProfileOutputDto>
 {
-    private constructor(private readonly userGateway: UserGateway) {}
+    private constructor(private readonly userGateway: GetUserGateway) {}
 
-    public static create(userGateway: UserGateway) {
+    public static create(userGateway: GetUserGateway) {
         return new GetProfileUsecase(userGateway)
     }
 

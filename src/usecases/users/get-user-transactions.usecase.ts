@@ -1,6 +1,6 @@
 import { Transaction } from "../../domain/transaction/entity/transaction"
 import { UserPropsOmit } from "../../domain/user/entity/user"
-import { UserGateway } from "../../domain/user/gateway/user.gateway"
+import { GetUserTransactionsGateway } from "../../domain/user/gateway/get-user-transactions"
 import { Usecase } from "../usecase"
 
 export type GetUserTransactionsInput = {
@@ -25,9 +25,11 @@ export type GetUserTransactionsOutput = {
 export class GetUserTransactionsUsecase
     implements Usecase<GetUserTransactionsInput, GetUserTransactionsOutput>
 {
-    private constructor(private readonly userGateway: UserGateway) {}
+    private constructor(
+        private readonly userGateway: GetUserTransactionsGateway
+    ) {}
 
-    public static create(userGateway: UserGateway) {
+    public static create(userGateway: GetUserTransactionsGateway) {
         return new GetUserTransactionsUsecase(userGateway)
     }
 

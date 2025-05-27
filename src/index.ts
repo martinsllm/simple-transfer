@@ -8,38 +8,51 @@ import {
     GetUserTransactionsRoute,
 } from "./infra/api/express/routes/users"
 import {
-    TransactionRepositoryPrisma,
-    UserRepositoryPrisma,
+    CreateTransactionRepositoryPrisma,
+    GetTransactionsRepositoryPrisma,
+    GetUserRepositoryPrisma,
     WalletRepositoryPrisma,
 } from "./infra/repositories"
+import { GetUserTransactionRepositoryPrisma } from "./infra/repositories/user/get-user-transactions.repository.prisma"
 import { AuthorizarionApi } from "./infra/services/authorization.api"
 import { prisma } from "./package/prisma/prisma"
 import {
     CreateTransactionUsecase,
     GetTransactionsUseCase,
 } from "./usecases/transactions"
-import { GetProfileUsecase } from "./usecases/users"
-import { GetUserTransactionsUsecase } from "./usecases/users/get-user-transactions.usecase"
+import { GetProfileUsecase, GetUserTransactionsUsecase } from "./usecases/users"
 
-const userRepository = UserRepositoryPrisma.create(prisma)
+const getUserRepository = GetUserRepositoryPrisma.create(prisma)
+
 const walletRepository = WalletRepositoryPrisma.create(prisma)
-const transactionRepository = TransactionRepositoryPrisma.create(prisma)
+
+const createTransactionRepository =
+    CreateTransactionRepositoryPrisma.create(prisma)
+
+const getUserTransactionsRepository =
+    GetUserTransactionRepositoryPrisma.create(prisma)
+
+const getTransactionsRepository = GetTransactionsRepositoryPrisma.create(prisma)
+
 const authService = AuthorizarionApi.create()
 
 function main() {
     const createTransaction = CreateTransactionUsecase.create(
-        userRepository,
+        getUserRepository,
         walletRepository,
-        transactionRepository,
+        createTransactionRepository,
         authService
     )
 
-    const getTransactions = GetTransactionsUseCase.create(transactionRepository)
+    const getTransactions = GetTransactionsUseCase.create(
+        getTransactionsRepository
+    )
 
-    const getProfile = GetProfileUsecase.create(userRepository)
+    const getProfile = GetProfileUsecase.create(getUserRepository)
 
-    const getUserTransactions =
-        GetUserTransactionsUsecase.create(userRepository)
+    const getUserTransactions = GetUserTransactionsUsecase.create(
+        getUserTransactionsRepository
+    )
 
     const createTransactionRoute =
         CreateTransactionRoute.create(createTransaction)
