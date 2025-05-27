@@ -5,7 +5,7 @@ import { Usecase } from "../usecase"
 
 export type GetTransactionsInputDto = void
 
-export type GetTransactionOutputDto = {
+export type GetTransactionsOutputDto = {
     transactions: {
         id: string
         payerId: number
@@ -18,7 +18,7 @@ export type GetTransactionOutputDto = {
 }
 
 export class GetTransactionsUseCase
-    implements Usecase<GetTransactionsInputDto, GetTransactionOutputDto>
+    implements Usecase<GetTransactionsInputDto, GetTransactionsOutputDto>
 {
     private constructor(
         private readonly transactionGateway: GetTransactionsGateway
@@ -30,7 +30,7 @@ export class GetTransactionsUseCase
 
     public async execute(
         input: GetTransactionsInputDto
-    ): Promise<GetTransactionOutputDto> {
+    ): Promise<GetTransactionsOutputDto> {
         const transactions = await this.transactionGateway.getTransactions()
 
         const output = this.presentOutput(transactions)
@@ -40,7 +40,7 @@ export class GetTransactionsUseCase
 
     private presentOutput(
         transactions: Transaction[]
-    ): GetTransactionOutputDto {
+    ): GetTransactionsOutputDto {
         return {
             transactions: transactions.map((t) => {
                 return {

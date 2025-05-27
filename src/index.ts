@@ -3,12 +3,14 @@ import {
     CreateTransactionRoute,
     GetTransactionsRoute,
 } from "./infra/api/express/routes/transactions"
+import { GetTransactionRoute } from "./infra/api/express/routes/transactions/get-transaction.express.route"
 import {
     GetProfileRoute,
     GetUserTransactionsRoute,
 } from "./infra/api/express/routes/users"
 import {
     CreateTransactionRepositoryPrisma,
+    GetTransactionRepositoryPrisma,
     GetTransactionsRepositoryPrisma,
     GetUserRepositoryPrisma,
     WalletRepositoryPrisma,
@@ -19,6 +21,7 @@ import { prisma } from "./package/prisma/prisma"
 import {
     CreateTransactionUsecase,
     GetTransactionsUseCase,
+    GetTransactionUsecase,
 } from "./usecases/transactions"
 import { GetProfileUsecase, GetUserTransactionsUsecase } from "./usecases/users"
 
@@ -33,6 +36,8 @@ const getUserTransactionsRepository =
     GetUserTransactionRepositoryPrisma.create(prisma)
 
 const getTransactionsRepository = GetTransactionsRepositoryPrisma.create(prisma)
+
+const getTransactionRepository = GetTransactionRepositoryPrisma.create(prisma)
 
 const authService = AuthorizarionApi.create()
 
@@ -54,6 +59,10 @@ function main() {
         getUserTransactionsRepository
     )
 
+    const getTransaction = GetTransactionUsecase.create(
+        getTransactionRepository
+    )
+
     const createTransactionRoute =
         CreateTransactionRoute.create(createTransaction)
 
@@ -64,6 +73,8 @@ function main() {
     const getUserTransactionsRoute =
         GetUserTransactionsRoute.create(getUserTransactions)
 
+    const getTransactionRoute = GetTransactionRoute.create(getTransaction)
+
     const port = Number(process.env.PORT)
 
     const api = ApiExpress.create([
@@ -71,6 +82,7 @@ function main() {
         getTransactionsRoute,
         getProfileRoute,
         getUserTransactionsRoute,
+        getTransactionRoute,
     ])
 
     api.start(port)

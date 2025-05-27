@@ -3,11 +3,11 @@ import { UserPropsOmit } from "../../domain/user/entity/user"
 import { GetUserTransactionsGateway } from "../../domain/user/gateway/get-user-transactions"
 import { Usecase } from "../usecase"
 
-export type GetUserTransactionsInput = {
+export type GetUserTransactionsInputDto = {
     id: number
 }
 
-export type GetUserTransactionsOutput = {
+export type GetUserTransactionsOutputDto = {
     transactions: {
         transactionsReceived: {
             id: string
@@ -23,7 +23,8 @@ export type GetUserTransactionsOutput = {
 }
 
 export class GetUserTransactionsUsecase
-    implements Usecase<GetUserTransactionsInput, GetUserTransactionsOutput>
+    implements
+        Usecase<GetUserTransactionsInputDto, GetUserTransactionsOutputDto>
 {
     private constructor(
         private readonly userGateway: GetUserTransactionsGateway
@@ -34,8 +35,8 @@ export class GetUserTransactionsUsecase
     }
 
     public async execute(
-        input: GetUserTransactionsInput
-    ): Promise<GetUserTransactionsOutput> {
+        input: GetUserTransactionsInputDto
+    ): Promise<GetUserTransactionsOutputDto> {
         const transactions = await this.userGateway.getUserTransactions(
             input.id
         )

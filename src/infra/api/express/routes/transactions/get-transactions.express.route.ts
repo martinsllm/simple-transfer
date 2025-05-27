@@ -1,11 +1,11 @@
 import { Request, Response } from "express"
 import { HttpMethod, Route } from "../route"
 import {
-    GetTransactionOutputDto,
+    GetTransactionsOutputDto,
     GetTransactionsUseCase,
 } from "../../../../../usecases/transactions"
 
-export type GetTransactionsResponseDto = GetTransactionOutputDto
+export type GetTransactionsResponseDto = GetTransactionsOutputDto
 
 export class GetTransactionsRoute implements Route {
     private constructor(
@@ -41,7 +41,7 @@ export class GetTransactionsRoute implements Route {
     }
 
     private present(
-        input: GetTransactionOutputDto
+        input: GetTransactionsOutputDto
     ): GetTransactionsResponseDto {
         const response: GetTransactionsResponseDto = {
             transactions: input.transactions.map((t: any) => {
