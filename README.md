@@ -27,7 +27,7 @@ Instale as dependências
 Inicie o servidor
 
 ```bash
-  yarn run dev
+  yarn dev
 ```
 
 
